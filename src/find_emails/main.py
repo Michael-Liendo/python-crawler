@@ -1,10 +1,8 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 import re
 
 from utils.csv_save import load_urls_from_csv, save_emails_to_csv
-
-driver = webdriver.Chrome()
+from web_driver.DriverSetup import WebDriverSetUp
 
 # regex for matching email addresses
 EMAIL_REGEX = re.compile(r"^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+\.[a-z]{1,3}$")
@@ -19,17 +17,14 @@ def get_emails_from_webs():
     unloaded_pages = []
     total_emails = []
 
-    for url in load_urls_from_csv():
+    driver_setup = WebDriverSetUp()
 
-        try:
-            driver.get(url)
-            loaded_pages.append(url)
-        except:
-            unloaded_pages.append(url)
-            continue
+    for url in load_urls_from_csv():
+        driver_setup.get(url)
+        loaded_pages.append(url)
 
         # Find all elements containing text on the page
-        elements = driver.find_elements(By.XPATH, "//*[text()]")
+        elements = driver_setup.find_elements("XPATH", "//*[text()]")
         page_emails = []
 
         # Extract email addresses from text elements
@@ -40,6 +35,8 @@ def get_emails_from_webs():
 
         total_emails.extend(page_emails)
         emails.extend(page_emails)
+
+    driver_setup.quit_driver()
 
     # Print all stats
     print("Total pages:", total_pages)

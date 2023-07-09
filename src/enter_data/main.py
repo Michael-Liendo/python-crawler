@@ -1,11 +1,9 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 from utils.csv_save import load_urls_from_csv
-
-driver = webdriver.Chrome()
+from web_driver.DriverSetup import WebDriverSetUp
 
 
 def main():
@@ -19,20 +17,19 @@ def main():
     total_send_pages = []
     total_unsent_pages = []
 
+    driver_setup = WebDriverSetUp()
+
     for url in urls:
-        try:
-            driver.get(url)
-            loaded_pages.append(url)
-        except:
-            unloaded_pages.append(url)
-            total_unsent_pages.append(url)
-            continue
+        driver_setup.get(url)
+        loaded_pages.append(url)
 
         # Wait for the page to load
         try:
-            form = WebDriverWait(driver, 10).until(
+            form = WebDriverWait(driver_setup.get_driver(), 10).until(
                 EC.presence_of_element_located((By.XPATH, "//form")))
         except:
+            unloaded_pages.append(url)
+            total_unsent_pages.append(url)
             continue
 
         # find the form element
@@ -66,11 +63,9 @@ def main():
             except:
                 total_unsent_pages.append(url)
 
-        # Cerrar el controlador de Selenium
-        driver.quit()
+    driver_setup.quit_driver()
 
-    # print all stats
-
+    # Print all stats
     print("Total pages: ", total_pages)
     print("Loaded pages: ", len(loaded_pages))
     print("Unloaded pages: ", len(unloaded_pages))
