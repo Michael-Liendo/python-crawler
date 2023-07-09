@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import os
 
 from utils.csv_save import save_urls_to_csv
-from WebDriverSetup.DriverSetup import WebDriverSetUp
+from web_driver import WebDriverSetUp
 
 
 def get_urls_from_query(query, num_pages=1):

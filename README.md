@@ -39,7 +39,7 @@ git clone https://github.com/Michael-Liendo/python-crawler
 
 ## Usage
 
-### Find Contact Pages
+### Find URL Pages
 
 To find urls on google, configure `.env`, run the following command:
 
