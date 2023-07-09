@@ -1,3 +1,4 @@
+from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.common.by import By
 import re
 
@@ -5,7 +6,7 @@ from utils.csv_save import load_urls_from_csv, save_emails_to_csv
 from web_driver.DriverSetup import WebDriverSetUp
 
 # regex for matching email addresses
-EMAIL_REGEX = re.compile(r"^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+\.[a-z]{1,3}$")
+EMAIL_REGEX = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
 
 
 def get_emails_from_webs():
@@ -29,9 +30,12 @@ def get_emails_from_webs():
 
         # Extract email addresses from text elements
         for element in elements:
-            text = element.text
-            matches = re.findall(EMAIL_REGEX, text)
-            page_emails.extend(matches)
+            try:
+                text = element.text
+                matches = re.findall(EMAIL_REGEX, text)
+                page_emails.extend(matches)
+            except StaleElementReferenceException:
+                continue
 
         total_emails.extend(page_emails)
         emails.extend(page_emails)

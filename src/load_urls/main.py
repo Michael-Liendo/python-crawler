@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import os
 
 from utils.csv_save import save_urls_to_csv
-from web_driver import WebDriverSetUp
+from web_driver.DriverSetup import WebDriverSetUp
 
 
 def get_urls_from_query(query, num_pages=1):
@@ -22,7 +22,7 @@ def get_urls_from_query(query, num_pages=1):
             "CSS_SELECTOR", "div.yuRUbf a")
 
         for result in search_results:
-            url = result.get("href")
+            url = result.get_attribute("href")
             if url.startswith("http"):
                 contact_pages.append(url)
 
@@ -41,10 +41,15 @@ def main():
         print("La variable de entorno DORKS no está definida.")
         return
 
-    dorks = dorks_str.split(", ")
+    dorks = dorks_str.split(",")
+
     num_pages = int(os.environ.get("MAX_PAGES_NUMBS"))
+
+    all_pages = []
 
     for dork in dorks:
         contact_pages = get_urls_from_query(dork, num_pages)
         print(f"Found {len(contact_pages)} contact pages:")
-        save_urls_to_csv(contact_pages)
+        all_pages.extend(contact_pages)
+
+    save_urls_to_csv(all_pages)

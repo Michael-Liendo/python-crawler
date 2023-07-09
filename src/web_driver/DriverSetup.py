@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 
 
@@ -8,7 +9,11 @@ class WebDriverSetUp:
     @classmethod
     def get_driver(cls):
         if not cls._driver:
-            cls._driver = webdriver.Chrome()
+            # Configurar las opciones del controlador Chrome
+            chrome_options = Options()
+            # Ejecutar en modo headless
+            chrome_options.add_argument("--headless")
+            cls._driver = webdriver.Chrome(options=chrome_options)
         return cls._driver
 
     @classmethod
