@@ -50,6 +50,6 @@ def get_emails_from_webs():
     return emails
 
 
-def load_emails():
+def main():
     emails = get_emails_from_webs()
     save_emails_to_csv(emails)

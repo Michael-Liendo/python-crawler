@@ -8,7 +8,7 @@ from utils.csv_save import load_urls_from_csv
 driver = webdriver.Chrome()
 
 
-def enter_data_in_forms():
+def main():
     # Open the web
     urls = load_urls_from_csv()
 

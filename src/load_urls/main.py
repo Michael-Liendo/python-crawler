@@ -1,5 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from dotenv import load_dotenv
+import os
 
 from utils.csv_save import save_urls_to_csv
 
@@ -31,9 +33,18 @@ def get_urls_from_query(query, num_pages=1):
     return contact_pages
 
 
-def load_urls():
-    dorks = ["inurl:contacto.php"]
-    num_pages = 1
+def main():
+    load_dotenv()
+
+    # Change your finds query
+    dorks_str = os.environ.get("DORKS")
+
+    if dorks_str is None:
+        print("La variable de entorno DORKS no está definida.")
+        return
+
+    dorks = dorks_str.split(", ")
+    num_pages = int(os.environ.get("MAX_PAGES_NUMBS"))
 
     for dork in dorks:
         contact_pages = get_urls_from_query(dork, num_pages)
