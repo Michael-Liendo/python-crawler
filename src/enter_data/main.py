@@ -37,12 +37,22 @@ def main():
 
         # Fill all fields
         for input_field in inputs_fields:
-            name_attribute = input_field.get_attribute("name")
+            try:
+                name_attribute = input_field.get_attribute("name") or ''
+            except:
+                pass
 
             if name_attribute == "name" or name_attribute == "nombre":
                 input_field.send_keys("Novabits")
 
-            elif name_attribute == "email" or name_attribute == "correo" or input_field.get_attribute("type") == "email":
+            elif name_attribute == "phone" or name_attribute == "telefono" or (input_field.get_attribute("type") or '') == "tel":
+                input_field.send_keys("0000000000")
+
+            # subject
+            elif name_attribute == "subject" or name_attribute == "subject":
+                input_field.send_keys("Propuesta de desarrollo")
+
+            elif name_attribute == "email" or name_attribute == "correo" or (input_field.get_attribute("type") or '') == "email":
                 input_field.send_keys("contacto@novabitsve.com")
 
             else:

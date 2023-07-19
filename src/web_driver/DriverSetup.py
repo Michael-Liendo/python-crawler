@@ -12,7 +12,7 @@ class WebDriverSetUp:
             # Configurar las opciones del controlador Chrome
             chrome_options = Options()
             # Ejecutar en modo headless
-            chrome_options.add_argument("--headless")
+            # chrome_options.add_argument("--headless")
             cls._driver = webdriver.Chrome(options=chrome_options)
         return cls._driver
 
